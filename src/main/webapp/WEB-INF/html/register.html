@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data" action="/register">
+    <input type="text" name="username" />
+    <input type="text" name="password" />
+    <input type="file" name="profilePicture" accept="image/jpeg" />
+    <input type="submit" />
+</form>
+<script>
+    var url = 'ws://'+window.location.host+'/marcoByWebSocket';
+    var sock = new WebSocket(url);
+    sock.onopen = function () {
+        console.log('Opening');
+        sayMarco();
+    };
+    sock.onmessage = function (p1) {
+        console.log('accept:',p1.data);
+        setTimeout(function () {
+            sayMarco()
+        },2000)
+    }
+    function sayMarco() {
+        console.log('sending marco with webSocket to service');
+        sock.send("marco with webSocket!");
+    }
+</script>
+</body>
+</html>

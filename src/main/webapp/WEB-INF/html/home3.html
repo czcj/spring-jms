@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Title</title>
+    <script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+    <script src="/static/stomp.min.js"></script>
+</head>
+<body>
+hello home3!<button onclick="sendName()">send</button><button onclick="sendName2()">send2</button>
+<script>
+    var url = "http://localhost:8080/stomp";
+    var sock = new SockJS(url);
+    var stompclient = Stomp.over(sock);
+    var spitter = JSON.stringify({"username":"HTML","password":"htmlsocket"})
+    stompclient.connect(
+        {
+            name: 'meng' // 携带客户端信息
+        }, function(frame) {
+//        console.log('Connected: ' + frame);
+        stompclient.subscribe('/queue/notify', function(respnose){ //2
+            console.log(respnose.body);
+        });
+        stompclient.subscribe("/queue/1/notify",function(respnose){ //2
+            console.log(JSON.parse(respnose.body));
+        });
+    });
+
+    function sendName() {
+        stompclient.send("/app/marco", {}, spitter);
+    }
+    function sendName2() {
+        stompclient.send("/app/say", {}, spitter);
+    }
+
+
+</script>
+</body>
+</html>

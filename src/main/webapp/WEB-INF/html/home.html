@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Title</title>
+    <script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+</head>
+<body>
+hello thymeleaf!
+<script>
+    var url = "http://localhost:8080/marcoBySockJs";
+    var sock = new SockJS(url);
+    sock.onopen = function () {
+        console.log('Opening');
+        sayMarcoBySockJs();
+    };
+    sock.onmessage = function (p1) {
+        console.log('accept:',p1.data);
+        setTimeout(function () {
+            sayMarcoBySockJs()
+        },2000)
+    }
+    function sayMarcoBySockJs() {
+        console.log('sending marco with SockJs! to service');
+        sock.send("marco with SockJs!");
+    }
+</script>
+</body>
+</html>
